@@ -17,6 +17,12 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
       }
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "32e3a9d4-1a4c-4cba-bb09-b5cfcfb199ef"
+      }
+    },
+    "owner": "pablojoel2"
   }
 }
