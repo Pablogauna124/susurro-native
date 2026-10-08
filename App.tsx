@@ -16,9 +16,9 @@ export default function App() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
-      <Webview
+      <WebView
         source={{ uri: 'https://susurroai.lovable.app' }}
-        styles{styles.webview}
+        style={styles.webview}
         javaScriptEnabled={true}
         domStorageEnabled={true}
         backgroundColor="#000000"
