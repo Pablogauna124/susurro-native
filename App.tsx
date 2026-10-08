@@ -1,30 +1,43 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, StatusBar, Platform, ActivityIndicator, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, StatusBar, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { Video, ResizeMode } from 'expo-av';
 
 export default function App() {
-  const [loading, setLoading] = useState(true);
+  const [videoFinished, setVideoFinished] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setVideoFinished(true);
+    }, 4200);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
-      <WebView
+      <Webview
         source={{ uri: 'https://susurroai.lovable.app' }}
-        style={styles.webview}
+        styles{styles.webview}
         javaScriptEnabled={true}
         domStorageEnabled={true}
-        startInLoadingState={false}
-        onLoadEnd={() => setLoading(false)}
         backgroundColor="#000000"
       />
-      {loading && (
-        <View style={styles.loadingContainer}>
-          <Image
-            source={require('./assets/splash.png')}
-            style={styles.logo}
-            resizeMode="contain"
+      {!videoFinished && (
+        <View style={styles.videoContainer}>
+          <Video
+            source={require('./assets/intro.mp4')}
+            style={StyleSheet.absoluteFill}
+            resizeMode={ResizeMode.COVER}
+            shouldPlay
+            isLooping={false}
+            isMuted={false}
+            onPlaybackStatusUpdate={(status) => {
+              if (status.isLoaded && status.didJustFinish) {
+                setVideoFinished(true);
+              }
+            }}
           />
-          <ActivityIndicator size="small" color="#ffffff" style={{ marginTop: 24 }} />
         </View>
       )}
     </View>
@@ -41,15 +54,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#000000',
   },
-  loadingContainer: {
+  videoContainer: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: '#000000',
-    justifyContent: 'center',
-    alignItems: 'center',
     zIndex: 999,
-  },
-  logo: {
-    width: 140,
-    height: 140,
   },
 });
